@@ -17,7 +17,13 @@
   tinymce.create('tinymce.plugins.CodeProtectPlugin', {
     init: function(ed, url) {
         ed.onGetContent.add(function(ed,o) {
-          var regex = new RegExp('<hr rel="([^"]*)?" class="mceItemRadiantCode" title="(.*?)" />', 'g');
+          // Original regex:
+          //   var regex = new RegExp('<hr rel="([^"]*)?" class="mceItemRadiantCode" title="(.*?)" />', 'g');
+
+          // I have modified this regular expression to make the "class" attribute optional because it was being 
+          // stripped from the element when it's rendered in TinyMCE (which means the original regex doesn't match
+          // and the element remains escaped and trapped inside a HR element).
+          var regex = new RegExp('<hr rel="([^"]*)?"( class="mceItemRadiantCode")? title="(.*?)" />', 'g');
           var m = o.content.match(regex);
           if (!(m == null)) {
           for (i=0; i<m.length; i++) {
