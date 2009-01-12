@@ -1,0 +1,16 @@
+<tr class="node <%= "level-#{level}#{children_class}#{virtual_class}" %>" id="page-<%= page.id %>">
+  <td class="page" style="<%= "padding-left: #{padding_left(level)}px" %>">
+    <span class="w1">
+      <%- if simple -%>
+      <%= icon + node_title %>
+      <%- else -%>
+      <%= expander + link_to(icon + node_title, '#', :title => page.url) + spinner %>
+      <%- end -%>
+    </span>
+  </td>
+</tr>
+<%- if expanded -%>
+<%- page.children.each do |child| -%>
+  <%= render_node child, :level => level + 1, :simple => simple %>
+<%- end -%>
+<%- end -%>

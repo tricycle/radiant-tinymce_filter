@@ -5,6 +5,11 @@ class TinymceFilterExtension < Radiant::Extension
   description "Provides a TinyMCE filter for the Radiant CMS."
   url "http://code.google.com/p/radiant-tinymce-extension/"
   
+  define_routes do |map|
+    map.connect '/admin/pagetree', :controller => 'wysiwyg', :action => 'pagetree'
+    map.connect '/admin/pagetree/children/:id/:level', :controller => 'wysiwyg', :action => 'children'
+  end
+  
   def activate
     # Load the filter
     TinyMceFilter    

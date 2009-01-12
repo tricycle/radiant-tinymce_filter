@@ -1,0 +1,14 @@
+<%-
+include_javascript 'admin/sitemap'
+include_javascript 'extensions/tiny_mce/wysiwyg_sitemap.js'
+include_stylesheet 'extensions/tiny_mce/wysiwyg_sitemap.css'
+-%>
+<table id="wysiwyg-site-map" class="index">
+  <tbody>
+    <%- if @homepage -%>
+    <%= render_node @homepage %>
+    <%- else -%>
+    <tr><td class="note">Your Site does not have any pages yet.</td></tr>
+    <%- end -%>
+  </tbody>
+</table>
