@@ -16,7 +16,8 @@ class TinymceFilterExtension < Radiant::Extension
     pages_controller.helper WysiwygHelper
     admin.page.edit.add :main, "/wysiwyg/link_dialog", :after => "edit_buttons"
     
-    include_tinymce_javascripts
+    include_extension_javascripts
+    include_extension_stylesheets
   end
   
   def deactivate
@@ -34,14 +35,37 @@ private
   def snippets_controller
     defined?(Admin::SnippetsController) ? Admin::SnippetsController : Admin::SnippetController
   end
-
-  def include_tinymce_javascripts
+  
+  def extension_asset_paths(*filenames)
+    filenames.collect{|filename| "extensions/tiny_mce/#{filename}" }
+  end
+  
+  def include_extension_stylesheets
+    include_css = Proc.new do
+      before_filter :add_tinymce_stylesheets, :only => [:edit, :new]
+      def add_tinymce_stylesheets
+        @stylesheets << 'extensions/tiny_mce/tinymce_integration'
+      end
+      private :add_tinymce_stylesheets
+    end
+    
+    pages_controller.class_eval(&include_css)
+    snippets_controller.class_eval(&include_css)
+  end
+  
+  def include_extension_javascripts
     include_js = lambda do
       before_filter :add_tinymce_javascripts, :only => [:edit, :new]
-      private
       def add_tinymce_javascripts
-        @javascripts << 'extensions/tiny_mce/tiny_mce' << 'extensions/tiny_mce/tiny_mce_settings' << 'extensions/tiny_mce/tinymce_filter'
+        (@javascripts << %w[
+          admin/sitemap
+          extensions/tiny_mce/tiny_mce
+          extensions/tiny_mce/tiny_mce_settings
+          extensions/tiny_mce/tinymce_filter
+          extensions/tiny_mce/tinymce_integration
+        ]).flatten!
       end
+      private :add_tinymce_javascripts
     end
     
     pages_controller.class_eval(&include_js)

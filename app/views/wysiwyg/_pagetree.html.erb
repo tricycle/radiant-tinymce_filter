@@ -1,0 +1,9 @@
+<table id="wysiwyg-site-map" class="index">
+  <tbody>
+    <%- if find_homepage -%>
+    <%= render_wysiwyg_node find_homepage %>
+    <%- else -%>
+    <tr><td class="note">Your Site does not have any pages yet.</td></tr>
+    <%- end -%>
+  </tbody>
+</table>
