@@ -10,8 +10,8 @@ var WysiwygSiteMap = Class.create(SiteMap, {
       '../admin/pagetree/children/' + id + '/' + level,
       {
         insertion: "after",
-        onLoading:  function() { spinner.show(); this.updating = true  }.bind(this),
-        onComplete: function() { spinner.fade(); this.updating = false }.bind(this),
+        onLoading:  function() { spinner.show(); this.updating = true;  }.bind(this),
+        onComplete: function() { spinner.fade(); this.updating = false; }.bind(this),
         method: 'get'
       }
     );
