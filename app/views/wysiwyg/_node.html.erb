@@ -11,6 +11,6 @@
 </tr>
 <%- if expanded -%>
 <%- page.children.each do |child| -%>
-  <%= render_wysiwyg_node child, :level => level + 1, :simple => simple %>
+  <%= render_simple_node child, :level => level + 1, :simple => simple %>
 <%- end -%>
 <%- end -%>

@@ -4,8 +4,9 @@ module WysiwygHelper
     @homepage ||= Page.find_by_parent_id(nil)
   end
   
-  # specialised version of render_node in Admin::NodeHelper to set the partial path
-  def render_wysiwyg_node(page, locals={})
+  # specialised version of render_node in Admin::NodeHelper to explicitly
+  # set the partial path to our simple partial
+  def render_simple_node(page, locals={})
     @current_node = page
     locals.reverse_merge!(:level => 0, :simple => false).merge!(:page => page)
     render :partial => 'wysiwyg/node', :locals =>  locals

@@ -6,7 +6,6 @@ class TinymceFilterExtension < Radiant::Extension
   url "http://github.com/tricycle/radiant-tinymce_filter/tree"
   
   define_routes do |map|
-    map.connect '/admin/pagetree', :controller => 'wysiwyg', :action => 'pagetree'
     map.connect '/admin/pagetree/children/:id/:level', :controller => 'wysiwyg', :action => 'children'
   end
   
