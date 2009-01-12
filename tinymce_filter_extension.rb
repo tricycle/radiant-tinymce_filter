@@ -17,8 +17,13 @@ class TinymceFilterExtension < Radiant::Extension
         @javascripts << 'extensions/tiny_mce/tiny_mce' << 'extensions/tiny_mce/tiny_mce_settings' << 'extensions/tiny_mce/tinymce_filter'
       end
     end
-    Admin::PageController.class_eval &include_js
-    Admin::SnippetController.class_eval &include_js
+    if defined?(Admin::PagesController) && defined(Admin::PagesController)
+      Admin::PagesController.class_eval &include_js
+      Admin::SnippetsController.class_eval &include_js
+    else
+      Admin::PageController.class_eval &include_js
+      Admin::SnippetController.class_eval &include_js
+    end
   end
   
   def deactivate
