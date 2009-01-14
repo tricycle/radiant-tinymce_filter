@@ -120,14 +120,7 @@ var RadiantLinkingPopup = {
     var isValidHref = function() {href != '' && href != 'http://'; };
     // TODO: deal with prsentLink already being an internal link
     // perhaps highlight the link with the right href in the popup
-    if (isValidHref) {
-      if (!this.isLinkSelected()) {
-        this.editor.execCommand('CreateLink', false, href);
-      } else {
-        var oldHref = this.getSelectedLink().href;
-        this.undoable(function() {oldHref = href;});
-      };
-    };
+    if (isValidHref) this.editor.execCommand('CreateLink', false, href);
     this.close();
   }
 };
