@@ -66,13 +66,15 @@ var RadiantLinkingPopup = {
     var ed = tinymce.EditorManager.activeEditor;
     var presentLink = ed.dom.getParent(ed.selection.getNode(), 'A');
     
-    tinyMCEPopup.execCommand("mceBeginUndoLevel");
+    // TODO: deal with link being present
+    // perhaps highlight the link with the right href in the popup
+    ed.execCommand("mceBeginUndoLevel");
     if (presentLink == null) {
       ed.execCommand('CreateLink', false, href, {skip_undo: true});
     } else {
       e.href = href;
     };
-    tinyMCEPopup.execCommand("mceEndUndoLevel");
+    ed.execCommand("mceEndUndoLevel");
     this.close();
   }
 };
@@ -97,15 +99,37 @@ var MiniSiteMap = Class.create(SiteMap, {
 });
 
 document.observe('dom:loaded', function() {
+  // attach Ajax-pagetree behaviour
   when('table.index', function(table){
     if(table.identify() == 'wysiwyg-site-map')  new MiniSiteMap(table);
   });
   
-  $$('#wysiwyg-site-map a').each(function(link) {
+  $$('#tinymce-linking-popup .tabs a').each(function(tab) {
+    tab.observe('click', function(e) {
+      e.stop();
+      var removeHere = function(elem) {elem.removeClassName('here');};
+      var paneId = this.attributes['href'].value; // this.href gives an absolute URL, not the actual value
+      var tabs = this.up('.tabs');
+      this.addClassName('here');
+      this.siblings().each(removeHere);
+      tabs.adjacent('.pane').each(removeHere);
+      tabs.adjacent(paneId).each(function(pane) {pane.addClassName('here');});
+    });
+  }); 
+  
+  $$('#tinymce-linking-popup #internal-link-pane a').each(function(link) {
     link.observe('click', function(e) {
       e.stop();
       RadiantLinkingPopup.insertLink(this.title);
-      $(this).up('.popup').hide();
     });
   });
+  
+  $$('#tinymce-linking-popup #external-link-pane form').each(function(form) {
+    form.observe('submit', function(e) {
+      e.stop();
+      form
+      RadiantLinkingPopup.insertLink();
+    });
+  }); 
+  
 });
