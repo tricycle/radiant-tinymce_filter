@@ -49,6 +49,15 @@ margin-bottom: 1em;
   display: block;
 }
 
+#tinymce-linking-popup .pane form {
+  padding: 5px;
+}
+
+#tinymce-linking-popup .pane input[type="text"] {
+  display: block;
+  width: 97%;
+}
+
 #tinymce-linking-popup .pane h2 {
   font-size: 85%;
   font-weight: normal;

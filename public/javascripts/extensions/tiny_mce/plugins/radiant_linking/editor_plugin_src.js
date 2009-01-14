@@ -29,7 +29,7 @@
 			});
 
 			// Register buttons
-			ed.addButton('internalLink', {
+			ed.addButton('link', {
 				title : 'advlink.link_desc',
 				cmd : 'mceRadiantLinkDialog'
 			});
@@ -49,32 +49,85 @@
 })();
 
 var RadiantLinkingPopup = {
-  id : 'tinymce-linking-popup',
+  init : function(id) {
+    this.id = id;
+    this.editor = tinymce.EditorManager.activeEditor;
+    this.hrefInput = $(this.id).select('form')[0].getInputs('text','href')[0];
+    this.attachBehaviour();
+  },
+  
+  attachBehaviour : function() {
+    $$('#'+this.id+' .tabs a').each(function(tab) {
+      tab.observe('click', function(e) {
+        e.stop();
+        var removeHere = function(elem) {elem.removeClassName('here');};
+        var paneId = this.attributes['href'].value; // this.href gives an absolute URL, not the actual value
+        var tabs = this.up('.tabs');
+        this.addClassName('here');
+        this.siblings().each(removeHere);
+        tabs.adjacent('.pane').each(removeHere);
+        tabs.adjacent(paneId).each(function(pane) {pane.addClassName('here');});
+      });
+    }); 
+
+    $$('#'+this.id+' #internal-link-pane a').each(function(link) {
+      link.observe('click', function(e) {
+        e.stop();
+        RadiantLinkingPopup.insertLink(this.title);
+      });
+    });
+
+    $$('#'+this.id+' #external-link-pane form').each(function(form) {
+      form.observe('submit', function(e) {
+        e.stop();
+        RadiantLinkingPopup.insertLink(RadiantLinkingPopup.hrefInput.value);
+      });
+    }); 
+  },
+  
   show : function() {
     // this element comes form the partial wysiwyg/_link_dialog.html.erb
     // the partial is inserted in tinymce_filter_extension.rb
-    var element = $(this.id);
-    center(element); // radiant function from admin.js
-    element.show();
+    var popup = $(this.id);
+    center(popup); // radiant function from admin.js
+    this.editor = tinymce.EditorManager.activeEditor;
+    this.populateField();
+    popup.show();
   },
   
   close : function() {
-    $(this.id).up('.popup').hide();
+    $(this.id).hide();
+  },
+  
+  undoable : function(callback) {
+    this.editor.execCommand("mceBeginUndoLevel");
+    callback();
+    this.editor.execCommand("mceEndUndoLevel");
+  },
+  
+  getSelectedLink : function() {
+    return this.editor.dom.getParent(this.editor.selection.getNode(), 'A');
+  },
+  
+  isLinkSelected : function() { return this.getSelectedLink() != null; },
+  
+  populateField : function() {
+    if(this.isLinkSelected())
+      this.hrefInput.value = this.getSelectedLink().href;
   },
   
   insertLink : function(href) {
-    var ed = tinymce.EditorManager.activeEditor;
-    var presentLink = ed.dom.getParent(ed.selection.getNode(), 'A');
-    
-    // TODO: deal with link being present
+    var isValidHref = function() {href != '' && href != 'http://'; };
+    // TODO: deal with prsentLink already being an internal link
     // perhaps highlight the link with the right href in the popup
-    ed.execCommand("mceBeginUndoLevel");
-    if (presentLink == null) {
-      ed.execCommand('CreateLink', false, href, {skip_undo: true});
-    } else {
-      e.href = href;
+    if (isValidHref) {
+      if (!this.isLinkSelected()) {
+        this.editor.execCommand('CreateLink', false, href);
+      } else {
+        var oldHref = this.getSelectedLink().href;
+        this.undoable(function() {oldHref = href;});
+      };
     };
-    ed.execCommand("mceEndUndoLevel");
     this.close();
   }
 };
@@ -104,32 +157,5 @@ document.observe('dom:loaded', function() {
     if(table.identify() == 'wysiwyg-site-map')  new MiniSiteMap(table);
   });
   
-  $$('#tinymce-linking-popup .tabs a').each(function(tab) {
-    tab.observe('click', function(e) {
-      e.stop();
-      var removeHere = function(elem) {elem.removeClassName('here');};
-      var paneId = this.attributes['href'].value; // this.href gives an absolute URL, not the actual value
-      var tabs = this.up('.tabs');
-      this.addClassName('here');
-      this.siblings().each(removeHere);
-      tabs.adjacent('.pane').each(removeHere);
-      tabs.adjacent(paneId).each(function(pane) {pane.addClassName('here');});
-    });
-  }); 
-  
-  $$('#tinymce-linking-popup #internal-link-pane a').each(function(link) {
-    link.observe('click', function(e) {
-      e.stop();
-      RadiantLinkingPopup.insertLink(this.title);
-    });
-  });
-  
-  $$('#tinymce-linking-popup #external-link-pane form').each(function(form) {
-    form.observe('submit', function(e) {
-      e.stop();
-      form
-      RadiantLinkingPopup.insertLink();
-    });
-  }); 
-  
+  RadiantLinkingPopup.init('tinymce-linking-popup');
 });
