@@ -4,7 +4,13 @@
       <%- if simple -%>
       <%= icon + node_title %>
       <%- else -%>
-      <%= expander + link_to(icon + node_title, '#', :title => page.url) + spinner %>
+        <%- if page.published? -%>
+        <%= expander + link_to(icon + node_title, '#', :title => page.url) + spinner %>
+        <%- else -%>
+        <small class="<%= page.status.name.downcase %>-status" title="Can't link to this page, it is not published">
+          <%= expander + icon + node_title + spinner %>
+        </small>
+        <%- end -%>
       <%- end -%>
     </span>
   </td>

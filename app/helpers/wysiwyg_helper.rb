@@ -1,8 +1,5 @@
 module WysiwygHelper
-  # HACK: duplicates Admin::PageController#index
-  def find_homepage
-    @homepage ||= Page.find_by_parent_id(nil)
-  end
+  include Admin::PageHelper
   
   # specialised version of render_node in Admin::NodeHelper to explicitly
   # set the partial path to our simple partial

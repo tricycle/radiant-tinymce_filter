@@ -13,6 +13,22 @@
   text-decoration: none;
 }
 
+#wysiwyg-site-map small {
+  font-size: 1em;
+}
+
+#wysiwyg-site-map .reviewed.status {
+  color: #9eb3bf;
+}
+#wysiwyg-site-map .draft-status {
+  color: #c00;
+}
+#wysiwyg-site-map .published-status {
+  color: black;
+}
+#wysiwyg-site-map .hidden-status {
+  color: #0c0;
+}
 #tinymce-linking-popup .tabs {
   margin: 0;
   border-bottom: 1px solid #cdc295;

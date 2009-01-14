@@ -8,8 +8,8 @@
     <h2>Select a page to link to</h2>
     <table id="wysiwyg-site-map" class="index">
       <tbody>
-        <%- if find_homepage -%>
-        <%= render_simple_node find_homepage %>
+        <%- if homepage -%>
+        <%= render_simple_node homepage %>
         <%- else -%>
         <tr><td class="note">Your Site does not have any pages yet.</td></tr>
         <%- end -%>
