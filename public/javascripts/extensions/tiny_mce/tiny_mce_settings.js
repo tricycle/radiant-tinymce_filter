@@ -13,5 +13,6 @@ tinyMCE.init({
   // theme_advanced_buttons1 : "example,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect",
   // theme_advanced_buttons2 : "bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code",
   // theme_advanced_buttons3 : "hr,removeformat,visualaid|sub,sup,charmap",
+  theme_advanced_buttons4 : 'internalLink',
 	apply_source_formatting : true
 });
