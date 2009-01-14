@@ -99,9 +99,9 @@ var RadiantLinkingPopup = {
     $(this.id).hide();
   },
   
-  undoable : function(callback) {
+  undoable : function(action) {
     this.editor.execCommand("mceBeginUndoLevel");
-    callback();
+    action();
     this.editor.execCommand("mceEndUndoLevel");
   },
   
@@ -140,11 +140,11 @@ var MiniSiteMap = Class.create(SiteMap, {
         
     new Ajax.Updater(
       row,
-      '../admin/pagetree/children/' + id + '/' + level,
+      '/admin/pagetree/children/' + id + '/' + level,
       {
         insertion: "after",
         onLoading:  function() { spinner.show(); this.updating = true;  }.bind(this),
-        onComplete: function() { spinner.fade(); this.updating = false; }.bind(this),
+        onComplete: function() { spinner.fade(); this.updating = false; RadiantLinkingPopup.attachBehaviour(); }.bind(this),
         method: 'get'
       }
     );
