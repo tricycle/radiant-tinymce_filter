@@ -61,7 +61,6 @@ private
           extensions/tiny_mce/tiny_mce
           extensions/tiny_mce/tiny_mce_settings
           extensions/tiny_mce/tinymce_filter
-          extensions/tiny_mce/tinymce_integration
         ]).flatten!
       end
       private :add_tinymce_javascripts
