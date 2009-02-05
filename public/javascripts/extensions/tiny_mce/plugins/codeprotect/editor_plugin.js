@@ -15,8 +15,8 @@
 
 (function() {
   tinymce.create('tinymce.plugins.CodeProtectPlugin', {
-    init: function(ed, url) {
-        ed.onGetContent.add(function(ed,o) {
+    init: function(editor, url) {
+        editor.onGetContent.add(function(editor,o) {
           // Original regex:
           //   var regex = new RegExp('<hr rel="([^"]*)?" class="mceItemRadiantCode" title="(.*?)" />', 'g');
 
@@ -32,9 +32,9 @@
           }
         }
       });
-      ed.onBeforeSetContent.add(function(ed, o) {
+      editor.onBeforeSetContent.add(function(editor, o) {
         /* Regexp taken from Phil Haack blog. Thanks Phil! */
-        var m = o.content.match(/<\/?r:\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\/?>/g);
+        var m = o.content.match(/<\/?r:[\w:]+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\/?>/g);
         var content = o.content;
         if (!(m == null)) {
           for (i=0; i < m.length; i++) {
