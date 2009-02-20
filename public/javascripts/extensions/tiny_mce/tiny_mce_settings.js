@@ -3,7 +3,7 @@ tinyMCE.init({
   editor_deselector : "noMceEditor",
 	mode : "textareas",
 	theme : "advanced",
-  extended_valid_elements: "r:*,hr[rel|class|title]",
+  extended_valid_elements: "r:*,span[rel|class|title]",
   plugins: "codeprotect,radiant_linking",
   content_css: "/javascripts/extensions/tiny_mce/tiny_mce_content.css",
 	theme_advanced_toolbar_location : "top",

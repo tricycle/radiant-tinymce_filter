@@ -1,4 +1,5 @@
-.mceItemRadiantCode { 
+.mceItemRadiantCode {
+  display: block;
   background: url('./plugins/codeprotect/images/radiant-code.png') no-repeat; 
   height: 18px;
   border: none;

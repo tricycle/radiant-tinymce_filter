@@ -11,31 +11,43 @@
 */
 
 (function() {
+  
+  var RadiusCodeProtect = {
+    protectionClassName : 'mceItemRadiantCode',
+    
+    radiusToHtml : function(editor, options) {
+      console.debug('radiusToHtml…');
+      var radiusTagRegex = /<\/?r:[\w:]+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\/?>/g;
+      var matches = options.content.match(radiusTagRegex);
+      var content = options.content;
+      if (matches != null) {
+        for (i=0; i < matches.length; i++) {
+          var title = matches[i].replace(/"/g, "'");
+          var match = escape(matches[i]);
+          var regex = new RegExp('(' + matches[i] + ')', 'i');
+          content = content.replace(regex, '<span rel="' + match + '" class="'+RadiusCodeProtect.protectionClassName+'" title="' + title + '"></span>');
+        }
+      }
+      options.content = content;
+    },
+    htmlToRadius : function(editor, options) {
+      console.debug('htmlToRadius…');
+      var replacementRegex = new RegExp('<span rel="([^"]*)?"( class="'+RadiusCodeProtect.protectionClassName+'")? title="(.*?)"></span>', 'g');
+      var matches = options.content.match(replacementRegex);
+      if (matches != null) {
+        for (i=0; i<matches.length; i++) {
+          var match = unescape(matches[i].replace(replacementRegex, '$1'));
+          options.content = options.content.replace(matches[i], match);
+        }
+      }
+    }
+  };
+  
+  
   tinymce.create('tinymce.plugins.CodeProtectPlugin', {
     init: function(ed, url) {
-        ed.onGetContent.add(function(ed,o) {
-          var regex = new RegExp('<hr rel="([^"]*)?"( class="mceItemRadiantCode")? title="(.*?)" />', 'g');
-          var m = o.content.match(regex);
-          if (!(m == null)) {
-          for (i=0; i<m.length; i++) {
-            var match = unescape(m[i].replace(regex, '$1'));
-            o.content = o.content.replace(m[i], match);
-          }
-        }
-      });
-      ed.onBeforeSetContent.add(function(ed, o) {
-        var m = o.content.match(/<\/?r:\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\/?>/g);
-        var content = o.content;
-        if (!(m == null)) {
-          for (i=0; i < m.length; i++) {
-            var title = m[i].replace(/"/g, "'");
-            var match = escape(m[i]);
-            var regex = new RegExp('(' + m[i] + ')', 'i');
-            content = content.replace(regex, '<hr rel="' + match + '" class="mceItemRadiantCode" title="' + title + '" />');
-          }
-        }
-        o.content = content;
-      });
+      ed.onBeforeSetContent.add(RadiusCodeProtect.radiusToHtml);
+      ed.onGetContent.add(RadiusCodeProtect.htmlToRadius);
     }
   });
 
