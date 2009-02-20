@@ -1,0 +1,27 @@
+<%- content_for :popups do -%>
+<% radiant_popup 'tinymce-linking-popup' do %>
+  <div class="tabs">
+    <a class="tab here" href="#internal-link-pane">Internal Link</a>
+    <a class="tab" href="#external-link-pane">External Link</a>
+  </div>
+  <div id="internal-link-pane" class="pane here">
+    <h2>Select a page to link to</h2>
+    <table id="wysiwyg-site-map" class="index">
+      <tbody>
+        <%- if homepage -%>
+        <%= render_simple_node homepage %>
+        <%- else -%>
+        <tr><td class="note">Your Site does not have any pages yet.</td></tr>
+        <%- end -%>
+      </tbody>
+    </table>
+  </div>
+  <div id="external-link-pane" class="pane">
+    <h2>Type a web address to link to</h2>
+    <form action="" method="get" accept-charset="utf-8">
+      <input type="text" name="href" value="http://" />
+      <input type="submit" value="Create Link" />
+    </form>
+  </div>
+<% end  %>
+<%- end -%>

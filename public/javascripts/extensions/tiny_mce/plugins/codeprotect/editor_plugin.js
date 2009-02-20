@@ -1,51 +1,52 @@
-/* I don't even know where this code comes from. It looks like a
-   simple TinyMCE plugin written for replacing some HTML tags with
-   placeholder images. The original version was modified and copied in
-   the first tinymce_filter extension for Radiant (hosted on Google
-   Code). I updated it to the latest TinyMCE API and fixed some stuff.
-   Daniele Gozzi
-
-   Original copyright notice follows.
+/*
+  
+  * Original Author: Tijmen Schep, Holland, 9-10-2005
+  * modified by “flydesign.nl”, author of the first tinymce_filter extension 
+    for Radiant (http://code.google.com/p/radiant-tinymce-extension/).
+  * onBeforeSetContent Regexp orignally taken from Phil Haack’s blog
+  * updated it to the latest TinyMCE API and fixed by Daniele Gozzi
+  * Matching-regex fixed by Andrew Buntine/Tricycle Developments
+  * Updated to not mangle namespaced Radius-tags by Gerrit Kaiser/Tricycle Developments
+  
 */
-/**** 
- * I'm not even gonna copyright this, that's just silly.
- * Feel free to improve on this code and re-upload it.
- * Tijmen Schep, Holland, 9-10-2005
- ****/
 
 (function() {
+  var RadiusCodeProtect = {
+    protectionClassName : 'mceItemRadiantCode',
+    
+    radiusToHtml : function(editor, options) {
+      console.debug('radiusToHtml…');
+      var radiusTagRegex = /<\/?r:[\w:]+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\/?>/g;
+      var matches = options.content.match(radiusTagRegex);
+      var content = options.content;
+      if (matches != null) {
+        for (i=0; i < matches.length; i++) {
+          var title = matches[i].replace(/"/g, "'");
+          var match = escape(matches[i]);
+          var regex = new RegExp('(' + matches[i] + ')', 'i');
+          content = content.replace(regex, '<span rel="' + match + '" class="'+RadiusCodeProtect.protectionClassName+'" title="' + title + '"></span>');
+        }
+      }
+      options.content = content;
+    },
+    htmlToRadius : function(editor, options) {
+      console.debug('htmlToRadius…');
+      var replacementRegex = new RegExp('<span rel="([^"]*)?"( class="'+RadiusCodeProtect.protectionClassName+'")? title="(.*?)"></span>', 'g');
+      var matches = options.content.match(replacementRegex);
+      if (matches != null) {
+        for (i=0; i<matches.length; i++) {
+          var match = unescape(matches[i].replace(replacementRegex, '$1'));
+          options.content = options.content.replace(matches[i], match);
+        }
+      }
+    }
+  };
+  
+  
   tinymce.create('tinymce.plugins.CodeProtectPlugin', {
-    init: function(editor, url) {
-        editor.onGetContent.add(function(editor,o) {
-          // Original regex:
-          //   var regex = new RegExp('<hr rel="([^"]*)?" class="mceItemRadiantCode" title="(.*?)" />', 'g');
-
-          // I have modified this regular expression to make the "class" attribute optional because it was being 
-          // stripped from the element when it's rendered in TinyMCE (which means the original regex doesn't match
-          // and the element remains escaped and trapped inside a HR element).
-          var regex = new RegExp('<hr rel="([^"]*)?"( class="mceItemRadiantCode")? title="(.*?)" />', 'g');
-          var m = o.content.match(regex);
-          if (!(m == null)) {
-          for (i=0; i<m.length; i++) {
-            var match = unescape(m[i].replace(regex, '$1'));
-            o.content = o.content.replace(m[i], match);
-          }
-        }
-      });
-      editor.onBeforeSetContent.add(function(editor, o) {
-        /* Regexp taken from Phil Haack blog. Thanks Phil! */
-        var m = o.content.match(/<\/?r:[\w:]+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\/?>/g);
-        var content = o.content;
-        if (!(m == null)) {
-          for (i=0; i < m.length; i++) {
-            var title = m[i].replace(/"/g, "'");
-            var match = escape(m[i]);
-            var regex = new RegExp('(' + m[i] + ')', 'i');
-            content = content.replace(regex, '<hr rel="' + match + '" class="mceItemRadiantCode" title="' + title + '" />');
-          }
-        }
-        o.content = content;
-      });
+    init: function(ed, url) {
+      ed.onBeforeSetContent.add(RadiusCodeProtect.radiusToHtml);
+      ed.onGetContent.add(RadiusCodeProtect.htmlToRadius);
     }
   });
 

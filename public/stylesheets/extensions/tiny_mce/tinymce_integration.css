@@ -1,0 +1,87 @@
+#wysiwyg-site-map {
+  font-size: 80%;
+  margin: 5px
+}
+#wysiwyg-site-map img.icon {
+  width: auto;
+  height: 16px;
+  margin-right: 5px;
+}
+
+#wysiwyg-site-map a {
+  color: black;
+  text-decoration: none;
+}
+
+#wysiwyg-site-map small {
+  font-size: 1em;
+}
+
+#wysiwyg-site-map .reviewed.status {
+  color: #9eb3bf;
+}
+#wysiwyg-site-map .draft-status {
+  color: #c00;
+}
+#wysiwyg-site-map .published-status {
+  color: black;
+}
+#wysiwyg-site-map .hidden-status {
+  color: #0c0;
+}
+#tinymce-linking-popup .tabs {
+  margin: 0;
+  border-bottom: 1px solid #cdc295;
+}
+
+#tinymce-linking-popup .tab {
+  font-weight: bold;
+  text-decoration: none;
+  text-transform: titlecase;
+  text-align: left;
+  display: inline-block;
+  background-color: #f5f1e2;
+  color: black;
+  border: 1px solid #f5f1e2;
+  border-bottom: 1px solid #cdc295;
+  margin: 0 0 -1px 0;
+  padding: 7px 10px 4px;0
+}
+
+#tinymce-linking-popup .tab.here {
+  background-color: #eae3c5;
+  border: 1px solid #cdc295;
+  border-bottom: 1px solid #eae3c5;
+}
+
+#tinymce-linking-popup .pane {
+  display: none;
+  border: 1px solid #cdc295;
+  border-top: none;
+margin-bottom: 1em;
+}
+
+#tinymce-linking-popup .pane.here {
+  display: block;
+}
+
+#tinymce-linking-popup .pane form {
+  padding: 5px;
+}
+
+#tinymce-linking-popup .pane input[type="text"] {
+  display: block;
+  width: 97%;
+}
+
+#tinymce-linking-popup .pane h2 {
+  font-size: 85%;
+  font-weight: normal;
+  background: #EAE3C5;
+  margin: 0;
+  padding: 5px 10px
+}
+
+#tinymce-linking-popup .close-link {
+  margin-top: 10px;
+}

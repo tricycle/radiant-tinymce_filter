@@ -1,0 +1,22 @@
+<tr class="node <%= "level-#{level}#{children_class}#{virtual_class}" %>" id="page-<%= page.id %>">
+  <td class="page" style="<%= "padding-left: #{padding_left(level)}px" %>">
+    <span class="w1">
+      <%- if simple -%>
+      <%= icon + node_title %>
+      <%- else -%>
+        <%- if page.published? -%>
+        <%= expander + link_to(icon + node_title, '#', :title => page.url) + spinner %>
+        <%- else -%>
+        <small class="<%= page.status.name.downcase %>-status" title="Can't link to this page, it is not published">
+          <%= expander + icon + node_title + spinner %>
+        </small>
+        <%- end -%>
+      <%- end -%>
+    </span>
+  </td>
+</tr>
+<%- if expanded -%>
+<%- page.children.each do |child| -%>
+  <%= render_simple_node child, :level => level + 1, :simple => simple %>
+<%- end -%>
+<%- end -%>
