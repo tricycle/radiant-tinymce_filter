@@ -4,7 +4,7 @@ tinyMCE.init({
 	mode : "textareas",
 	theme : "advanced",
   extended_valid_elements: "r:*,span[rel|class|title]",
-  plugins: "codeprotect,radiant_linking",
+  plugins: "safari,codeprotect,radiant_linking",
   content_css: "/javascripts/extensions/tiny_mce/tiny_mce_content.css",
 	theme_advanced_toolbar_location : "top",
 	theme_advanced_toolbar_align : "left",
