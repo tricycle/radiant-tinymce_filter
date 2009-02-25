@@ -16,7 +16,6 @@
     protectionClassName : 'mceItemRadiantCode',
     
     radiusToHtml : function(editor, options) {
-      console.debug('radiusToHtml…');
       var radiusTagRegex = /<\/?r:[\w:]+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\/?>/g;
       var matches = options.content.match(radiusTagRegex);
       var content = options.content;
@@ -31,7 +30,6 @@
       options.content = content;
     },
     htmlToRadius : function(editor, options) {
-      console.debug('htmlToRadius…');
       var replacementRegex = new RegExp('<span rel="([^"]*)?"( class="'+RadiusCodeProtect.protectionClassName+'")? title="(.*?)"></span>', 'g');
       var matches = options.content.match(replacementRegex);
       if (matches != null) {
