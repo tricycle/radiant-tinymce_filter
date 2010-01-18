@@ -1,5 +1,5 @@
 module WysiwygHelper
-  include Admin::PageHelper
+  include Admin::PagesHelper
   
   # specialised version of render_node in Admin::NodeHelper to explicitly
   # set the partial path to our simple partial
@@ -13,6 +13,6 @@ module WysiwygHelper
     close_link = link_to_function 'Close', "$(this).up('.popup').hide()", :class => 'close-link'
     inner_html = block_given? ? capture(&content) : ''
     container = content_tag :div, [inner_html, close_link, "\n"].join, :id => id, :class => 'popup', :style => 'display: none'
-    concat container, content.binding
+    concat container
   end
 end

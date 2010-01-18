@@ -1,4 +1,4 @@
-require_dependency 'application'
+require_dependency 'application_controller'
 
 class TinymceFilterExtension < Radiant::Extension
   version "1.1"
@@ -12,7 +12,7 @@ class TinymceFilterExtension < Radiant::Extension
   def activate
     preload_filter
     
-    pages_controller.helper WysiwygHelper
+    Admin::PagesController.helper WysiwygHelper
     admin.page.edit.add :main, "/wysiwyg/link_dialog", :after => "edit_buttons"
     
     include_extension_javascripts
@@ -25,14 +25,6 @@ class TinymceFilterExtension < Radiant::Extension
 private
   def preload_filter
     TinyMceFilter
-  end
-  
-  def pages_controller
-    defined?(Admin::PagesController) ? Admin::PagesController : Admin::PageController
-  end
-  
-  def snippets_controller
-    defined?(Admin::SnippetsController) ? Admin::SnippetsController : Admin::SnippetController
   end
   
   def extension_asset_paths(*filenames)
@@ -48,8 +40,8 @@ private
       private :add_tinymce_stylesheets
     end
     
-    pages_controller.class_eval(&include_css)
-    snippets_controller.class_eval(&include_css)
+    Admin::PagesController.class_eval(&include_css)
+    Admin::SnippetsController.class_eval(&include_css)
   end
   
   def include_extension_javascripts
@@ -66,7 +58,7 @@ private
       private :add_tinymce_javascripts
     end
     
-    pages_controller.class_eval(&include_js)
-    snippets_controller.class_eval(&include_js)
+    Admin::PagesController.class_eval(&include_js)
+    Admin::SnippetsController.class_eval(&include_js)
   end
 end
