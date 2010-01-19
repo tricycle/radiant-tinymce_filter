@@ -10,20 +10,20 @@ Installation
 
 Install the extension in your project.
 
-  cd ~/Code/awesome_pies
-  git submodule add http://github.com/tricycle/radiant-tinymce_filter.git vendor/extensions/tinymce_filter
+    cd ~/Code/awesome_pies
+    git submodule add http://github.com/tricycle/radiant-tinymce_filter.git vendor/extensions/tinymce_filter
 
 Place the javascripts and stylesheets from the plugin in your radiant docroot.
 
-  cp -rv vendor/extensions/tinymce_filter/public .
+    cp -rv vendor/extensions/tinymce_filter/public .
 
 By default, TinyMCE will look for a /stylesheets/content.css file to use in the editor. If you want to add your own styling to the editor, you can create this file. Radiant code will automatically get a class name. Add the following CSS to your content.css file:
 
-  .mceItemRadiantCode { 
-    background: url('../javascripts/extensions/tiny_mce/plugins/codeprotect/images/radiant-code.png') no-repeat; 
-    height: 18px;
-    border: none;
-  }
+    .mceItemRadiantCode { 
+        background: url('../javascripts/extensions/tiny_mce/plugins/codeprotect/images/radiant-code.png') no-repeat; 
+        height: 18px;
+        border: none;
+    }
 
 Settings
 --------
